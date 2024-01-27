@@ -89,6 +89,9 @@ const User = ({ user }: { user: UserInfo }) => (
 const Filters = ({ user }: { user: UserInfo | null }) => {
 	const issueFilter = useContext(IssueFilterContext);
 	const issueFilterDispatch = useContext(IssueFilterDispatchContext);
+	const handleContextMenu = (e: React.MouseEvent) => {
+		console.log('context menu', { x: e.clientX, y: e.clientY });
+	};
 
 	return (
 		<Grid container item width="100%">
@@ -101,6 +104,7 @@ const Filters = ({ user }: { user: UserInfo | null }) => {
 						<ListItem key={filter.type} sx={{ my: 1, p: 0 }}>
 							<ListItemButton
 								onClick={(_e) => issueFilterDispatch(filter)}
+								onContextMenu={handleContextMenu}
 								selected={filter.type === issueFilter.type}
 								sx={{ p: '3px', borderRadius: 1 }}
 							>
