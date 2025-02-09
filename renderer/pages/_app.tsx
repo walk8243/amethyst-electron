@@ -3,7 +3,6 @@ import type { AppProps } from 'next/app';
 import Head from 'next/head';
 import type { PaletteMode } from '@mui/material';
 import { createTheme, ThemeProvider } from '@mui/material/styles';
-import ErrorBoundary from '../components/ErrorBoundary';
 import {
 	ColorModeContext,
 	ColorModeDispatchContext,
@@ -81,9 +80,7 @@ const MyApp = ({ Component, pageProps }: AppProps) => {
 			<ColorModeContext.Provider value={mode}>
 				<ColorModeDispatchContext.Provider value={dispatch}>
 					<ThemeProvider theme={theme}>
-						<ErrorBoundary>
-							<Component {...pageProps} />
-						</ErrorBoundary>
+						<Component {...pageProps} />
 					</ThemeProvider>
 				</ColorModeDispatchContext.Provider>
 			</ColorModeContext.Provider>

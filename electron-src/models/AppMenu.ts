@@ -1,29 +1,20 @@
 import {
 	BrowserWindow,
-	BrowserView,
 	ipcMain,
 	Menu,
 	MenuItemConstructorOptions,
 	safeStorage,
 	shell,
-	dialog,
 } from 'electron';
 import isDev from 'electron-is-dev';
-import log from 'electron-log/main';
 
-import {
-	gainGithubAllData,
-	gainGithubIssues,
-	refreshIssueTimer,
-} from '../github';
 import { announceUpdate } from '../utils/release';
 import { store } from '../utils/store';
 import { isMac } from '../utils/window';
-import type { SettingData } from '../preload/setting';
+import type { SettingData } from '../../types/Setting';
 
 export const createMenu = ({
 	mainWindow,
-	webview,
 	settingWindow,
 	aboutWindow,
 	updateWindow,
@@ -32,7 +23,6 @@ export const createMenu = ({
 	settingWindow: BrowserWindow;
 	aboutWindow: BrowserWindow;
 	updateWindow: BrowserWindow;
-	webview: BrowserView;
 }): Menu => {
 	const menu = Menu.buildFromTemplate([
 		{
@@ -49,7 +39,7 @@ export const createMenu = ({
 		},
 		{
 			label: '表示',
-			submenu: viewMenu({ mainWindow, webview }),
+			submenu: viewMenu({ mainWindow }),
 		},
 		{
 			label: 'ウィンドウ',
@@ -62,14 +52,6 @@ export const createMenu = ({
 		},
 	]);
 
-	ipcMain.handle('setting:display', async () => {
-		return {
-			baseUrl: store.get('githubSetting', {
-				baseUrl: 'https://api.github.com/',
-				token: '',
-			}).baseUrl,
-		};
-	});
 	ipcMain
 		.on(
 			'setting:submit',
@@ -81,8 +63,6 @@ export const createMenu = ({
 						safeStorage.encryptString(data.token).toString('base64'),
 				});
 				settingWindow.hide();
-
-				gainGithubAllData(false);
 			},
 		)
 		.on('setting:cancel', (_event: Electron.IpcMainEvent) => {
@@ -160,36 +140,14 @@ const editMenu = (): MenuItemConstructorOptions[] => [
 
 const viewMenu = ({
 	mainWindow,
-	webview,
 }: {
 	mainWindow: BrowserWindow;
-	webview: BrowserView;
 }): MenuItemConstructorOptions[] => [
-	{
-		label: 'Webページを再読み込み',
-		accelerator: 'CmdOrCtrl+R',
-		click: () => webview.webContents.reload(),
-	},
-	{
-		label: 'Issueを再読み込み',
-		accelerator: 'CmdOrCtrl+Shift+R',
-		click: () => {
-			gainGithubIssues()
-				.then((_issues) => {
-					refreshIssueTimer();
-				})
-				.catch((error) => {
-					log.warn('Issueの手動取得に失敗しました', error);
-					dialog.showErrorBox('Issueの取得に失敗しました', error.message);
-				});
-		},
-	},
 	{
 		label: 'Amethystを再読み込み',
 		accelerator: 'CmdOrCtrl+Shift+Alt+R',
 		click: () => {
 			mainWindow.webContents.reload();
-			webview.webContents.reload();
 		},
 	},
 	...viewDevMenu(mainWindow),

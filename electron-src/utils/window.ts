@@ -1,8 +1,6 @@
 import { join } from 'node:path';
 import { BrowserWindow, BrowserView, clipboard, ipcMain } from 'electron';
-import log from 'electron-log';
 import { getLoadedUrl } from './render';
-import { createWebviewMenu } from '../models/ContextMenu';
 
 export const isMac = process.platform === 'darwin';
 
@@ -105,11 +103,6 @@ export const createUpdate = (parentWindow: BrowserWindow) => {
 export const createWebview = () => {
 	const webview = new BrowserView({});
 	webview.webContents.loadURL('https://github.com/');
-	webview.webContents.on('context-menu', (_event, params) => {
-		log.debug('webview context-menu', params);
-		const menu = createWebviewMenu(params);
-		menu.popup();
-	});
 
 	return webview;
 };

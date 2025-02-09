@@ -1,6 +1,6 @@
 {
   "name": "amethyst",
-  "version": "1.16.3",
+  "version": "2.0.0-alpha.0",
   "description": "関係しているGitHubのIssuesを表示・管理するデスクトップアプリ",
   "main": "main/index.js",
   "scripts": {
@@ -22,7 +22,6 @@
   "keywords": [
     "electron",
     "github",
-    "issues",
     "desktop-app"
   ],
   "author": "walk8243 <walk8243@gmail.com> (https://walk8243.xyz/)",
@@ -41,16 +40,13 @@
     "@mui/icons-material": "^5.15.16",
     "@mui/material": "^5.15.16",
     "@walk8243/amethyst-common": "file:common",
-    "dayjs": "^1.11.10",
     "electron-devtools-installer": "^3.2.0",
     "electron-is-dev": "^1.2.0",
     "electron-log": "^5.1.1",
     "electron-next": "^3.1.5",
     "electron-store": "^8.1.0",
-    "p-queue": "^6.6.2",
     "react": "^18.3.1",
-    "react-dom": "^18.3.1",
-    "semver": "^7.6.0"
+    "react-dom": "^18.3.1"
   },
   "devDependencies": {
     "@tsconfig/next": "^2.0.3",
@@ -68,9 +64,7 @@
     "eslint-plugin-react": "^7.33.2",
     "modern-css-reset": "^1.4.0",
     "next": "^14.2.17",
-    "png2icons": "^2.0.1",
     "prettier": "^3.2.5",
-    "rimraf": "^5.0.5",
     "sass": "^1.80.6",
     "typescript": "^5.4.5"
   },

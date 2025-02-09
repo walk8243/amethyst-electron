@@ -1,4 +1,3 @@
-import { useEffect, useState } from 'react';
 import Head from 'next/head';
 import {
 	Box,
@@ -13,23 +12,10 @@ import {
 	Typography,
 } from '@mui/material';
 import { Heading } from '../components/Heading';
-import type { SettingData } from '../interfaces';
 
 const SettingPage = () => {
-	const [data, setData] = useState<SettingData>({ baseUrl: '' });
-	useEffect(() => {
-		window.setting
-			?.display()
-			.then((data) => {
-				if (data) {
-					setData(() => data);
-				}
-			})
-			.catch(console.error);
-	}, []);
-
 	const handleSubmit = () => {
-		window.setting?.submit({ baseUrl: data.baseUrl, token: data.token });
+		window.setting?.submit({});
 	};
 	const handleCancel = () => {
 		window.setting?.cancel();
@@ -55,25 +41,7 @@ const SettingPage = () => {
 								</TableCell>
 								<TableCell>
 									<TextField
-										value={data.baseUrl}
-										onChange={(e) =>
-											setData(() => ({ ...data, baseUrl: e.target.value }))
-										}
-										variant="standard"
-									/>
-								</TableCell>
-							</TableRow>
-							<TableRow>
-								<TableCell>
-									<Typography>token</Typography>
-								</TableCell>
-								<TableCell>
-									<TextField
-										type="password"
-										value={data.token}
-										onChange={(e) =>
-											setData(() => ({ ...data, token: e.target.value }))
-										}
+										value="https://github.com/walk8243"
 										variant="standard"
 									/>
 								</TableCell>
