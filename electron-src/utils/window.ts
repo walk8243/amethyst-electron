@@ -1,5 +1,5 @@
 import { join } from 'node:path';
-import { BrowserWindow, BrowserView, clipboard, ipcMain } from 'electron';
+import { BrowserWindow, clipboard, ipcMain, WebContentsView } from 'electron';
 import { getLoadedUrl } from './render';
 
 export const isMac = process.platform === 'darwin';
@@ -11,11 +11,6 @@ export const createMain = () => {
 		minWidth: 1300,
 		minHeight: 600,
 		show: false,
-		webPreferences: {
-			nodeIntegration: false,
-			contextIsolation: true,
-			preload: join(__dirname, '../preload', 'main.js'),
-		},
 	});
 
 	return mainWindow;
@@ -100,34 +95,47 @@ export const createUpdate = (parentWindow: BrowserWindow) => {
 	return updateWindow;
 };
 
+export const createMenuView = () => {
+	const menuView = new WebContentsView({});
+	menuView.webContents.loadURL(getLoadedUrl('menu'));
+	return menuView;
+};
 export const createWebview = () => {
-	const webview = new BrowserView({});
+	const webview = new WebContentsView({});
 	webview.webContents.loadURL('https://github.com/');
 
 	return webview;
 };
 
-const boundPosition = { x: 600, y: 48 } as const;
+const menuSize = { width: 250 } as const;
 export const putWebview = (
 	mainWindow: BrowserWindow,
-	webview: BrowserView,
+	menuView: WebContentsView,
+	webview: WebContentsView,
 	{ noHeaderFlag }: WebviewPutOptions = {},
 ) => {
 	const bounds = mainWindow.getBounds();
 	const option = { isNoHeader: noHeaderFlag === true, isMac };
+	const position = { x: menuSize.width, y: 0 } as const;
+	menuView.setBounds({
+		x: 0,
+		y: 0,
+		width: menuSize.width,
+		height: bounds.height,
+	});
 	const boundsPlan = {
-		x: boundPosition.x,
-		y: boundPosition.y,
-		width: calcWebviewWidth(bounds, option),
-		height: calcWebviewHeight(bounds, option),
+		...position,
+		width: calcWebviewWidth(bounds, option, position),
+		height: calcWebviewHeight(bounds, option, position),
 	};
 	webview.setBounds(boundsPlan);
 };
 const calcWebviewWidth = (
 	mainWindowBounds: Electron.Rectangle,
 	option: { isNoHeader: boolean; isMac: boolean },
+	position: { x: number },
 ) => {
-	let width = mainWindowBounds.width - boundPosition.x;
+	let width = mainWindowBounds.width - position.x;
 	if (!option.isMac) {
 		width -= 16;
 	}
@@ -136,8 +144,9 @@ const calcWebviewWidth = (
 const calcWebviewHeight = (
 	mainWindowBounds: Electron.Rectangle,
 	option: { isNoHeader: boolean; isMac: boolean },
+	position: { y: number },
 ) => {
-	const height = mainWindowBounds.height - boundPosition.y;
+	const height = mainWindowBounds.height - position.y;
 	if (option.isNoHeader) {
 		return height;
 	}

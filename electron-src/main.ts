@@ -1,13 +1,13 @@
 import { join } from 'node:path';
 import {
 	app,
-	BrowserView,
 	BrowserWindow,
 	clipboard,
 	ipcMain,
 	Menu,
 	session,
 	shell,
+	WebContentsView,
 } from 'electron';
 import prepareNext from 'electron-next';
 import isDev from 'electron-is-dev';
@@ -30,10 +30,22 @@ export const main = async () => {
 	await prepareNext('./renderer');
 	mainWindow.loadURL(getLoadedUrl());
 
+	const menuView = setupMenuView(mainWindow);
 	const webview = setupWebview(mainWindow);
-	const { updateWindow } = setupModalWindow(mainWindow);
-	setupErrorHandling(mainWindow, webview);
-	setupResizedSetting(mainWindow, webview);
+	const { updateWindow } = setupModalWindow({
+		mainWindow,
+		menuView,
+		webview,
+	});
+	setupErrorHandling({
+		mainWindow,
+		webview,
+	});
+	setupResizedSetting({
+		mainWindow,
+		menuView,
+		webview,
+	});
 
 	await announceUpdate(updateWindow, false);
 	await setupDevtools();
@@ -53,10 +65,15 @@ const setupMainWindow = () => {
 
 	return mainWindow;
 };
+const setupMenuView = (mainWindow: BrowserWindow) => {
+	const menuView = windowUtils.createMenuView();
+	mainWindow.contentView.addChildView(menuView);
+	menuView.setBounds({ x: 0, y: 0, width: 250, height: 500 });
+	return menuView;
+};
 const setupWebview = (mainWindow: BrowserWindow) => {
 	const webview = windowUtils.createWebview();
-	mainWindow.setBrowserView(webview);
-	windowUtils.putWebview(mainWindow, webview);
+	mainWindow.contentView.addChildView(webview);
 	ipcMain.on('browser:open', (_event, url: string) => {
 		shell.openExternal(url);
 	});
@@ -99,7 +116,15 @@ const setupWebview = (mainWindow: BrowserWindow) => {
 	});
 	return webview;
 };
-const setupModalWindow = (mainWindow: BrowserWindow) => {
+const setupModalWindow = ({
+	mainWindow,
+	menuView,
+	webview,
+}: {
+	mainWindow: BrowserWindow;
+	menuView: WebContentsView;
+	webview: WebContentsView;
+}) => {
 	const settingWindow = windowUtils.createSetting(mainWindow);
 	const aboutWindow = windowUtils.createAbout(mainWindow);
 	const updateWindow = windowUtils.createUpdate(mainWindow);
@@ -110,6 +135,7 @@ const setupModalWindow = (mainWindow: BrowserWindow) => {
 		updateWindow,
 	});
 	Menu.setApplicationMenu(menu);
+	windowUtils.putWebview(mainWindow, menuView, webview);
 	mainWindow.show();
 
 	return {
@@ -118,10 +144,13 @@ const setupModalWindow = (mainWindow: BrowserWindow) => {
 		updateWindow,
 	};
 };
-const setupErrorHandling = (
-	mainWindow: BrowserWindow,
-	webview: BrowserView,
-) => {
+const setupErrorHandling = ({
+	mainWindow,
+	webview,
+}: {
+	mainWindow: BrowserWindow;
+	webview: WebContentsView;
+}) => {
 	const logPath = join(
 		app.getPath('userData'),
 		windowUtils.isMac ? `Logs/${app.name}` : 'logs',
@@ -150,25 +179,32 @@ const setupErrorHandling = (
 	});
 	ipcMain.handle('error:path', () => logPath);
 };
-const setupResizedSetting = (
-	mainWindow: BrowserWindow,
-	webview: BrowserView,
-) => {
+const setupResizedSetting = ({
+	mainWindow,
+	menuView,
+	webview,
+}: {
+	mainWindow: BrowserWindow;
+	menuView: WebContentsView;
+	webview: WebContentsView;
+}) => {
 	mainWindow
 		.on('maximize', () => {
-			windowUtils.putWebview(mainWindow, webview);
+			windowUtils.putWebview(mainWindow, menuView, webview);
 		})
 		.on('unmaximize', () => {
-			windowUtils.putWebview(mainWindow, webview);
+			windowUtils.putWebview(mainWindow, menuView, webview);
 		})
 		.on('resized', () => {
-			windowUtils.putWebview(mainWindow, webview);
+			windowUtils.putWebview(mainWindow, menuView, webview);
 		})
 		.on('enter-full-screen', () => {
-			windowUtils.putWebview(mainWindow, webview, { noHeaderFlag: true });
+			windowUtils.putWebview(mainWindow, menuView, webview, {
+				noHeaderFlag: true,
+			});
 		})
 		.on('leave-full-screen', () => {
-			windowUtils.putWebview(mainWindow, webview);
+			windowUtils.putWebview(mainWindow, menuView, webview);
 		});
 };
 const setupDevtools = async () => {
