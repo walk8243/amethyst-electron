@@ -20,6 +20,16 @@ import text from '../styles/colors/text';
 
 const MenuPage = () => {
 	const colorMode = useContext(ColorModeContext);
+	const handleIssues = () => {
+		window.menu.issues();
+	};
+	const handlePullRequests = () => {
+		window.menu.pullRequests();
+	};
+	const handleNotifications = () => {
+		window.menu.notifications();
+	};
+
 	return (
 		<>
 			<Head>
@@ -39,15 +49,15 @@ const MenuPage = () => {
 					メニュー
 				</Heading>
 				<List>
-					<MenuListItem sx={{ mb: 1, cursor: 'pointer' }}>
+					<MenuListItem onClick={handleIssues}>
 						<FontAwesomeIcon icon={faCircleDot}></FontAwesomeIcon>
 						<Typography>Issues</Typography>
 					</MenuListItem>
-					<MenuListItem sx={{ mb: 1, cursor: 'pointer' }}>
+					<MenuListItem onClick={handlePullRequests}>
 						<FontAwesomeIcon icon={faCodePullRequest}></FontAwesomeIcon>
 						<Typography>Pull Requests</Typography>
 					</MenuListItem>
-					<MenuListItem sx={{ mb: 1, cursor: 'pointer' }}>
+					<MenuListItem onClick={handleNotifications}>
 						<FontAwesomeIcon icon={faInbox}></FontAwesomeIcon>
 						<Typography>Notifications</Typography>
 					</MenuListItem>
@@ -58,6 +68,8 @@ const MenuPage = () => {
 };
 
 const MenuListItem = styled(ListItem)<ListItemProps>(() => ({
+	marginBottom: '4px',
+	cursor: 'pointer',
 	'& .MuiTypography-body1': {
 		fontSize: '20px',
 	},

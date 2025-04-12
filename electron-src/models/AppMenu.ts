@@ -143,13 +143,6 @@ const viewMenu = ({
 }: {
 	mainWindow: BrowserWindow;
 }): MenuItemConstructorOptions[] => [
-	{
-		label: 'Amethystを再読み込み',
-		accelerator: 'CmdOrCtrl+Shift+Alt+R',
-		click: () => {
-			mainWindow.webContents.reload();
-		},
-	},
 	...viewDevMenu(mainWindow),
 	{ type: 'separator' },
 	{ role: 'togglefullscreen', label: 'フルスクリーン', enabled: false },

@@ -14,5 +14,10 @@ declare global {
 			close: () => void;
 			open: (url: string) => void;
 		};
+		menu: {
+			issues: () => void;
+			pullRequests: () => void;
+			notifications: () => void;
+		};
 	}
 }

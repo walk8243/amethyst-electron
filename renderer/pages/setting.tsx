@@ -15,10 +15,10 @@ import { Heading } from '../components/Heading';
 
 const SettingPage = () => {
 	const handleSubmit = () => {
-		window.setting?.submit({});
+		window.setting.submit({});
 	};
 	const handleCancel = () => {
-		window.setting?.cancel();
+		window.setting.cancel();
 	};
 
 	return (

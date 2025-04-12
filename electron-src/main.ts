@@ -2,7 +2,6 @@ import { join } from 'node:path';
 import {
 	app,
 	BrowserWindow,
-	clipboard,
 	ipcMain,
 	Menu,
 	session,
@@ -62,58 +61,31 @@ const setupMainWindow = () => {
 		log.verbose('App ColorMode is changed', mode);
 		store.set('color', mode);
 	});
+	ipcMain.on('browser:open', (_event, url: string) => {
+		shell.openExternal(url);
+	});
 
 	return mainWindow;
 };
 const setupMenuView = (mainWindow: BrowserWindow) => {
 	const menuView = windowUtils.createMenuView();
 	mainWindow.contentView.addChildView(menuView);
-	menuView.setBounds({ x: 0, y: 0, width: 250, height: 500 });
 	return menuView;
 };
 const setupWebview = (mainWindow: BrowserWindow) => {
 	const webview = windowUtils.createWebview();
 	mainWindow.contentView.addChildView(webview);
-	ipcMain.on('browser:open', (_event, url: string) => {
-		shell.openExternal(url);
-	});
-	ipcMain.handle('browser:reload', (_event) => {
-		webview.webContents.reload();
-	});
-	ipcMain.handle('browser:history', (_event, ope: 'back' | 'forward') => {
-		if (ope === 'back') {
-			webview.webContents.goBack();
-		}
-		if (ope === 'forward') {
-			webview.webContents.goForward();
-		}
 
-		return {
-			canGoBack: webview.webContents.canGoBack(),
-			canGoForward: webview.webContents.canGoForward(),
-		};
+	ipcMain.on('menu:issues', () => {
+		webview.webContents.loadURL('https://github.com/issues');
 	});
-	ipcMain.on('browser:copy', (_event, url: string) => {
-		clipboard.writeText(url);
+	ipcMain.on('menu:pullRequests', () => {
+		webview.webContents.loadURL('https://github.com/pulls');
 	});
-	ipcMain.handle(
-		'browser:search',
-		async (_event, query: string, direction: 'next' | 'back') => {
-			if (!query) {
-				webview.webContents.stopFindInPage('clearSelection');
-				return;
-			}
-			webview.webContents.findInPage(query, { forward: direction === 'next' });
-		},
-	);
+	ipcMain.on('menu:notifications', () => {
+		webview.webContents.loadURL('https://github.com/notifications');
+	});
 
-	webview.webContents.on('did-finish-load', () => {
-		mainWindow.webContents.send('browser:load', {
-			url: webview.webContents.getURL(),
-			canGoBack: webview.webContents.canGoBack(),
-			canGoForward: webview.webContents.canGoForward(),
-		});
-	});
 	return webview;
 };
 const setupModalWindow = ({

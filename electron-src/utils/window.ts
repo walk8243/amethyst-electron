@@ -96,14 +96,19 @@ export const createUpdate = (parentWindow: BrowserWindow) => {
 };
 
 export const createMenuView = () => {
-	const menuView = new WebContentsView({});
+	const menuView = new WebContentsView({
+		webPreferences: {
+			nodeIntegration: false,
+			contextIsolation: true,
+			preload: join(__dirname, '../preload', 'menu.js'),
+		},
+	});
 	menuView.webContents.loadURL(getLoadedUrl('menu'));
 	return menuView;
 };
 export const createWebview = () => {
 	const webview = new WebContentsView({});
 	webview.webContents.loadURL('https://github.com/');
-
 	return webview;
 };
 
