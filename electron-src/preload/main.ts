@@ -34,6 +34,8 @@ contextBridge.exposeInMainWorld('electron', {
 			callback(value),
 		),
 	setColor: (mode: 'light' | 'dark') => ipcRenderer.send('app:setColor', mode),
+	proxyUserIcon: (userId: number) =>
+		ipcRenderer.invoke('app:proxyUserIcon', userId),
 
 	showFilterMenu: (type: IssueFilterTypes) =>
 		ipcRenderer.send('app:showFilterMenu', type),

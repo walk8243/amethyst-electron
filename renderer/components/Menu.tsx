@@ -64,28 +64,35 @@ const Menu = () => {
 	);
 };
 
-const User = ({ user }: { user: UserInfo }) => (
-	<Grid container item columnGap={2}>
-		<Grid item xs="auto">
-			<Avatar
-				alt={user.login}
-				src={user.avatarUrl}
-				sx={{ width: 60, height: 60 }}
-			/>
+const User = ({ user }: { user: UserInfo }) => {
+	const [icon, setIcon] = useState<string>('');
+	useEffect(() => {
+		window.electron?.proxyUserIcon(user.id).then((icon) => {
+			setIcon(Buffer.from(icon).toString('base64'));
+		});
+	}, []);
+
+	return (
+		<Grid container item columnGap={2}>
+			<Grid item xs="auto">
+				<Avatar sx={{ width: 60, height: 60 }}>
+					<img src={`data:image/jpeg;base64,${icon}`} alt={user.login} />
+				</Avatar>
+			</Grid>
+			<Grid
+				container
+				item
+				xs
+				zeroMinWidth
+				direction="column"
+				justifyContent="center"
+			>
+				<Typography>{user.name}</Typography>
+				<Typography variant="body2">{user.login}</Typography>
+			</Grid>
 		</Grid>
-		<Grid
-			container
-			item
-			xs
-			zeroMinWidth
-			direction="column"
-			justifyContent="center"
-		>
-			<Typography>{user.name}</Typography>
-			<Typography variant="body2">{user.login}</Typography>
-		</Grid>
-	</Grid>
-);
+	);
+};
 
 const Filters = ({ user }: { user: UserInfo | null }) => {
 	const issueFilter = useContext(IssueFilterContext);

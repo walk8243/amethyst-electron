@@ -10,6 +10,7 @@ import type {
 } from '../types/GitHub';
 
 export const translateUserInfo = (userInfo: GithubUserInfo): UserInfo => ({
+	id: userInfo.id,
 	login: userInfo.login,
 	avatarUrl: userInfo.avatar_url,
 	name: userInfo.name,

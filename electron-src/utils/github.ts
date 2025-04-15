@@ -84,6 +84,20 @@ export const gainPrReviews = async (repository: string, prNumber: number) => {
 	return results;
 };
 
+export const proxyUserIcon = async (userId: number) => {
+	const response = await fetch(
+		`https://avatars.githubusercontent.com/u/${userId}`,
+	);
+	log.debug('[proxyUserIcon]', {
+		status: response.status,
+		url: response.url,
+	});
+	if (!response.ok) {
+		throw new Error(`ユーザーアイコンの取得に失敗しました ${userId}`);
+	}
+	return await response.arrayBuffer();
+};
+
 export const checkStoreData = () => {
 	const githubSetting = store.get('githubSetting');
 	return githubSetting?.baseUrl && githubSetting?.token

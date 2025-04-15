@@ -20,7 +20,7 @@ import { gainGithubAllData, scheduledGainGithubIssues } from './github';
 import { createMenu } from './models/AppMenu';
 import { createFilterMenu, createIssueCardMenu } from './models/ContextMenu';
 import { handleErrorDisplay } from './utils/error';
-import { checkStoreData } from './utils/github';
+import { checkStoreData, proxyUserIcon } from './utils/github';
 import { announceUpdate } from './utils/release';
 import { getLoadedUrl } from './utils/render';
 import { store } from './utils/store';
@@ -61,6 +61,9 @@ const setupMainWindow = () => {
 	let isFirst = true;
 	ipcMain.handle('app:version', () => `v${app.getVersion()}`);
 	ipcMain.handle('app:color', () => store.get('color', 'light'));
+	ipcMain.handle('app:proxyUserIcon', (_event, userId: number) =>
+		proxyUserIcon(userId),
+	);
 	ipcMain.on('app:ready', (_event) => {
 		log.verbose('App renderer is ready');
 		sendMainData(mainWindow, isFirst);
