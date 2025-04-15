@@ -26,6 +26,24 @@
 				"kind": "build",
 				"isDefault": true
 			},
+			"dependsOn": [
+				"build-common"
+			],
+			"presentation": {
+				"echo": true,
+				"reveal": "silent",
+				"focus": false,
+				"panel": "shared",
+				"showReuseMessage": true,
+				"clear": false
+			}
+		},
+		{
+			"type": "npm",
+			"script": "build-common",
+			"problemMatcher": [],
+			"label": "build-common",
+			"detail": "common files build",
 			"presentation": {
 				"echo": true,
 				"reveal": "silent",
@@ -83,7 +101,10 @@
 			"label": "check",
 			"problemMatcher": [],
 			"dependsOrder": "sequence",
-			"dependsOn": ["lint", "type-check"],
+			"dependsOn": [
+				"lint",
+				"type-check"
+			],
 			"presentation": {
 				"echo": true,
 				"reveal": "silent",
@@ -97,7 +118,11 @@
 			"label": "pack",
 			"problemMatcher": [],
 			"dependsOrder": "sequence",
-			"dependsOn": ["lint", "type-check", "dist"],
+			"dependsOn": [
+				"lint",
+				"type-check",
+				"dist"
+			],
 			"presentation": {
 				"echo": true,
 				"reveal": "silent",
