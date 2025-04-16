@@ -84,16 +84,14 @@ export const gainPrReviews = async (repository: string, prNumber: number) => {
 	return results;
 };
 
-export const proxyUserIcon = async (userId: number) => {
-	const response = await fetch(
-		`https://avatars.githubusercontent.com/u/${userId}`,
-	);
-	log.debug('[proxyUserIcon]', {
+export const proxyContent = async (url: string) => {
+	const response = await fetch(url);
+	log.debug('[proxyContent]', {
 		status: response.status,
 		url: response.url,
 	});
 	if (!response.ok) {
-		throw new Error(`ユーザーアイコンの取得に失敗しました ${userId}`);
+		throw new Error(`静的コンテンツの取得に失敗しました [${url}]`);
 	}
 	return await response.arrayBuffer();
 };

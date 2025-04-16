@@ -32,7 +32,7 @@ declare global {
 				callback: (map: IssueSupplementMap) => void,
 			) => void;
 			setColor: (mode: PaletteMode) => void;
-			proxyUserIcon: (userId: number) => Promise<ArrayBuffer>;
+			proxyContent: (url: string) => Promise<ArrayBuffer>;
 			showFilterMenu: (type: IssueFilterTypes) => void;
 			showIssueCardMenu: (issue: Issue) => void;
 		};

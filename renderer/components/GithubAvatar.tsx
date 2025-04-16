@@ -5,7 +5,7 @@ import { useState, useEffect } from 'react';
 export const GithubAvatar = ({ user }: { user: UserInfo }) => {
 	const [icon, setIcon] = useState<string>('');
 	useEffect(() => {
-		window.electron?.proxyUserIcon(user.id).then((icon) => {
+		window.electron?.proxyContent(user.avatarUrl).then((icon) => {
 			setIcon(Buffer.from(icon).toString('base64'));
 		});
 	}, []);
