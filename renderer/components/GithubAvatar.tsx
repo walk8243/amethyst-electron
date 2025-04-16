@@ -1,12 +1,12 @@
 import { Avatar } from '@mui/material';
-import type { UserInfo } from '../../types/User';
+import type { UserIcon } from '../../types/User';
 import { useState, useEffect } from 'react';
 
 export const GithubAvatar = ({
 	user,
 	size,
 }: {
-	user: UserInfo;
+	user: UserIcon;
 	size: number;
 }) => {
 	const [icon, setIcon] = useState<string>('');

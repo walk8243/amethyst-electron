@@ -1,6 +1,8 @@
-export interface UserInfo {
-	id: number;
+export interface UserIcon {
 	login: string;
-	name: string | null;
 	avatarUrl: string;
+}
+export interface UserInfo extends UserIcon {
+	id: number;
+	name: string | null;
 }

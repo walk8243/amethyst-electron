@@ -1,4 +1,4 @@
-import type { UserInfo } from './User';
+import type { UserIcon } from './User';
 
 export interface Issue {
 	id: number;
@@ -10,7 +10,7 @@ export interface Issue {
 	state: IssueState;
 	labels: IssueLabel[];
 	reactions: number;
-	creator: UserInfo | null;
+	creator: UserIcon | null;
 	reviews: Review[];
 	updatedAt: string;
 }
@@ -29,7 +29,7 @@ export interface IssueLabel {
 	color: string | null;
 }
 
-export interface Review extends UserInfo {
+export interface Review extends UserIcon {
 	state:
 		| 'APPROVED'
 		| 'CHANGES_REQUESTED'
