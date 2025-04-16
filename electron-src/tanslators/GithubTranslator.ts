@@ -32,7 +32,12 @@ export const translateIssue = ({
 	labels: translateIssueLabels(issue.labels),
 	reactions: issue.reactions ? issue.reactions.total_count : 0,
 	creator: issue.user
-		? { login: issue.user.login, avatarUrl: issue.user.avatar_url }
+		? {
+				id: issue.user.id,
+				login: issue.user.login,
+				avatarUrl: issue.user.avatar_url,
+				name: null,
+			}
 		: null,
 	reviews: translateIssueReviews(reviews, issue.user?.node_id),
 	updatedAt: issue.updated_at,
@@ -105,8 +110,10 @@ const translateIssueReviews = (
 	return users
 		.map((user) => reviews.find((review) => review.user.node_id === user)!)
 		.map((review) => ({
+			id: review.user.id,
 			login: review.user.login,
 			avatarUrl: review.user.avatar_url,
+			name: null,
 			state: review.state,
 		}));
 };

@@ -67,7 +67,7 @@ const Menu = () => {
 const User = ({ user }: { user: UserInfo }) => (
 	<Grid container item columnGap={2}>
 		<Grid item xs="auto">
-			<GithubAvatar user={user} />
+			<GithubAvatar user={user} size={60} />
 		</Grid>
 		<Grid
 			container

@@ -14,7 +14,6 @@ import type {
 } from '../../types/Issue';
 
 import {
-	Avatar,
 	Badge,
 	Card,
 	CardActionArea,
@@ -33,6 +32,7 @@ import {
 import { faCircleDot } from '@fortawesome/free-regular-svg-icons';
 import { githubColor } from '../styles/colors/github';
 import surfaceColor from '../styles/colors/surface';
+import { GithubAvatar } from './GithubAvatar';
 
 dayjs.extend(RelativeTime);
 
@@ -95,11 +95,7 @@ export const IssueCard = ({
 						</Grid>
 						<Grid container columnGap={2}>
 							<Grid item>
-								<Avatar
-									alt={issue.creator?.login}
-									src={issue.creator?.avatarUrl}
-									sx={{ width: 20, height: 20 }}
-								/>
+								<GithubAvatar user={issue.creator!} size={20} />
 							</Grid>
 							<Grid
 								container
@@ -154,11 +150,7 @@ const ReviewerAvatar = ({ review }: { review: Review }) => {
 			anchorOrigin={{ vertical: 'bottom', horizontal: 'right' }}
 			variant="dot"
 		>
-			<Avatar
-				alt={review.login}
-				src={review.avatarUrl}
-				sx={{ width: 20, height: 20 }}
-			/>
+			<GithubAvatar user={review} size={20} />
 		</Badge>
 	);
 };

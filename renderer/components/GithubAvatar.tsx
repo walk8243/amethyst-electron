@@ -2,7 +2,13 @@ import { Avatar } from '@mui/material';
 import type { UserInfo } from '../../types/User';
 import { useState, useEffect } from 'react';
 
-export const GithubAvatar = ({ user }: { user: UserInfo }) => {
+export const GithubAvatar = ({
+	user,
+	size,
+}: {
+	user: UserInfo;
+	size: number;
+}) => {
 	const [icon, setIcon] = useState<string>('');
 	useEffect(() => {
 		window.electron?.proxyContent(user.avatarUrl).then((icon) => {
@@ -11,7 +17,7 @@ export const GithubAvatar = ({ user }: { user: UserInfo }) => {
 	}, []);
 
 	return (
-		<Avatar sx={{ width: 60, height: 60 }}>
+		<Avatar sx={{ width: size, height: size }}>
 			<img src={`data:image/jpeg;base64,${icon}`} alt={user.login} />
 		</Avatar>
 	);

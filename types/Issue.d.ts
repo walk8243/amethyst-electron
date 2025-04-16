@@ -1,3 +1,5 @@
+import type { UserInfo } from './User';
+
 export interface Issue {
 	id: number;
 	key: string;
@@ -27,14 +29,7 @@ export interface IssueLabel {
 	color: string | null;
 }
 
-export interface UserInfo {
-	login: string;
-	avatarUrl: string;
-}
-
-export interface Review {
-	login: string;
-	avatarUrl: string;
+export interface Review extends UserInfo {
 	state:
 		| 'APPROVED'
 		| 'CHANGES_REQUESTED'
