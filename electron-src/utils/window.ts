@@ -1,5 +1,5 @@
 import { join } from 'node:path';
-import { BrowserWindow, BrowserView, clipboard, ipcMain } from 'electron';
+import { BrowserWindow, clipboard, ipcMain, WebContentsView } from 'electron';
 import log from 'electron-log';
 import { getLoadedUrl } from './render';
 import { createWebviewMenu } from '../models/ContextMenu';
@@ -103,7 +103,7 @@ export const createUpdate = (parentWindow: BrowserWindow) => {
 };
 
 export const createWebview = () => {
-	const webview = new BrowserView({});
+	const webview = new WebContentsView({});
 	webview.webContents.loadURL('https://github.com/');
 	webview.webContents.on('context-menu', (_event, params) => {
 		log.debug('webview context-menu', params);
@@ -117,7 +117,7 @@ export const createWebview = () => {
 const boundPosition = { x: 600, y: 48 } as const;
 export const putWebview = (
 	mainWindow: BrowserWindow,
-	webview: BrowserView,
+	webview: WebContentsView,
 	{ noHeaderFlag }: WebviewPutOptions = {},
 ) => {
 	const bounds = mainWindow.getBounds();

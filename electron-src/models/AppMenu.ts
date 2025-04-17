@@ -1,12 +1,12 @@
 import {
 	BrowserWindow,
-	BrowserView,
 	ipcMain,
 	Menu,
 	MenuItemConstructorOptions,
 	safeStorage,
 	shell,
 	dialog,
+	WebContentsView,
 } from 'electron';
 import isDev from 'electron-is-dev';
 import log from 'electron-log/main';
@@ -32,7 +32,7 @@ export const createMenu = ({
 	settingWindow: BrowserWindow;
 	aboutWindow: BrowserWindow;
 	updateWindow: BrowserWindow;
-	webview: BrowserView;
+	webview: WebContentsView;
 }): Menu => {
 	const menu = Menu.buildFromTemplate([
 		{
@@ -163,7 +163,7 @@ const viewMenu = ({
 	webview,
 }: {
 	mainWindow: BrowserWindow;
-	webview: BrowserView;
+	webview: WebContentsView;
 }): MenuItemConstructorOptions[] => [
 	{
 		label: 'Webページを再読み込み',

@@ -1,13 +1,13 @@
 import { join } from 'node:path';
 import {
 	app,
-	BrowserView,
 	BrowserWindow,
 	clipboard,
 	ipcMain,
 	Menu,
 	session,
 	shell,
+	WebContentsView,
 } from 'electron';
 import prepareNext from 'electron-next';
 import isDev from 'electron-is-dev';
@@ -40,11 +40,11 @@ export const main = async () => {
 		: gainGithubAllData(true);
 
 	const webview = setupWebview(mainWindow);
-	const { updateWindow } = setupModalWindow(
+	const { updateWindow } = setupModalWindow({
 		mainWindow,
 		webview,
-		storeDataFlag.isInvalid(),
-	);
+		settingShowFlag: storeDataFlag.isInvalid(),
+	});
 	setupErrorHandling(mainWindow, webview);
 	setupResizedSetting(mainWindow, webview);
 	setupContextMenu();
@@ -75,8 +75,8 @@ const setupMainWindow = () => {
 };
 const setupWebview = (mainWindow: BrowserWindow) => {
 	const webview = windowUtils.createWebview();
-	mainWindow.setBrowserView(webview);
-	windowUtils.putWebview(mainWindow, webview);
+	mainWindow.contentView.addChildView(webview);
+
 	ipcMain.handle('github:issue', async (_event, issue: Issue) => {
 		store.set(`issueSupplementMap.${issue.key}.isRead`, true);
 		webview.webContents.loadURL(issue.url);
@@ -123,11 +123,15 @@ const setupWebview = (mainWindow: BrowserWindow) => {
 	});
 	return webview;
 };
-const setupModalWindow = (
-	mainWindow: BrowserWindow,
-	webview: BrowserView,
-	settingShowFlag: boolean,
-) => {
+const setupModalWindow = ({
+	mainWindow,
+	webview,
+	settingShowFlag,
+}: {
+	mainWindow: BrowserWindow;
+	webview: WebContentsView;
+	settingShowFlag: boolean;
+}) => {
 	const settingWindow = windowUtils.createSetting(mainWindow);
 	const aboutWindow = windowUtils.createAbout(mainWindow);
 	const updateWindow = windowUtils.createUpdate(mainWindow);
@@ -153,7 +157,7 @@ const setupModalWindow = (
 };
 const setupErrorHandling = (
 	mainWindow: BrowserWindow,
-	webview: BrowserView,
+	webview: WebContentsView,
 ) => {
 	const logPath = join(
 		app.getPath('userData'),
@@ -185,7 +189,7 @@ const setupErrorHandling = (
 };
 const setupResizedSetting = (
 	mainWindow: BrowserWindow,
-	webview: BrowserView,
+	webview: WebContentsView,
 ) => {
 	mainWindow
 		.on('maximize', () => {
