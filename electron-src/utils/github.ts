@@ -87,6 +87,9 @@ export const gainPrReviews = async (repository: string, prNumber: number) => {
 export const proxyContent = async (url: string): Promise<Buffer> => {
 	return new Promise((resolve, reject) => {
 		const request = net.request(url);
+		const timer = setTimeout(() => {
+			request.abort();
+		}, 1 * 1000);
 		request.on('response', (response) => {
 			log.debug('[proxyContent response]', {
 				status: response.statusCode,
@@ -98,9 +101,13 @@ export const proxyContent = async (url: string): Promise<Buffer> => {
 			});
 			response.once('end', () => {
 				resolve(Buffer.concat(chunks));
+				clearTimeout(timer);
 			});
 			response.once('error', (error) => {
 				reject(error);
+			});
+			response.on('aborted', () => {
+				reject(new Error('静的コンテンツの取得が中断されました'));
 			});
 		});
 		request.end();
