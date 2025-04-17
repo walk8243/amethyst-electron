@@ -84,16 +84,27 @@ export const gainPrReviews = async (repository: string, prNumber: number) => {
 	return results;
 };
 
-export const proxyContent = async (url: string) => {
-	const response = await fetch(url);
-	log.debug('[proxyContent]', {
-		status: response.status,
-		url: response.url,
+export const proxyContent = async (url: string): Promise<Buffer> => {
+	return new Promise((resolve, reject) => {
+		const request = net.request(url);
+		request.on('response', (response) => {
+			log.debug('[proxyContent response]', {
+				status: response.statusCode,
+				url,
+			});
+			const chunks: Buffer[] = [];
+			response.on('data', (chunk) => {
+				chunks.push(chunk);
+			});
+			response.once('end', () => {
+				resolve(Buffer.concat(chunks));
+			});
+			response.once('error', (error) => {
+				reject(error);
+			});
+		});
+		request.end();
 	});
-	if (!response.ok) {
-		throw new Error(`静的コンテンツの取得に失敗しました [${url}]`);
-	}
-	return await response.arrayBuffer();
 };
 
 export const checkStoreData = () => {
