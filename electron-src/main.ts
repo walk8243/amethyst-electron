@@ -61,9 +61,14 @@ const setupMainWindow = () => {
 	let isFirst = true;
 	ipcMain.handle('app:version', () => `v${app.getVersion()}`);
 	ipcMain.handle('app:color', () => store.get('color', 'light'));
-	ipcMain.handle('app:proxyContent', (_event, url: string) =>
-		proxyContent(url),
-	);
+	ipcMain.handle('app:proxyContent', (_event, url: string) => {
+		try {
+			return proxyContent(url);
+		} catch (error) {
+			log.warn('proxyContentでエラーが発生しました', error);
+			return Buffer.allocUnsafe(0);
+		}
+	});
 	ipcMain.on('app:ready', (_event) => {
 		log.verbose('App renderer is ready');
 		sendMainData(mainWindow, isFirst);
