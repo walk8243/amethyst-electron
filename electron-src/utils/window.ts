@@ -103,8 +103,7 @@ export const createUpdate = (parentWindow: BrowserWindow) => {
 };
 
 export const createWebview = () => {
-	const webview = new WebContentsView({});
-	webview.webContents.loadURL('https://github.com/');
+	const webview = new WebContentsView();
 	webview.webContents.on('context-menu', (_event, params) => {
 		log.debug('webview context-menu', params);
 		const menu = createWebviewMenu(params);

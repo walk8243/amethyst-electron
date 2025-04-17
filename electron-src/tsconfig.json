@@ -1,12 +1,10 @@
 {
-  "extends": "@tsconfig/node20/tsconfig.json",
+  "extends": "@tsconfig/node22/tsconfig.json",
   "compilerOptions": {
     "allowJs": true,
     "alwaysStrict": true,
     "isolatedModules": true,
     "jsx": "preserve",
-    "module": "commonjs",
-    "moduleResolution": "node",
     "noEmit": false,
     "noFallthroughCasesInSwitch": true,
     "noUnusedLocals": true,

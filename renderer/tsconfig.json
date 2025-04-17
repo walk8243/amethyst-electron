@@ -1,5 +1,16 @@
 {
   "extends": "@tsconfig/next/tsconfig.json",
-  "include": ["next-env.d.ts", "**/*.ts", "**/*.tsx", "../next.config.js", "../types/Github.ts"],
-  "exclude": ["node_modules"]
+  "include": [
+    "next-env.d.ts",
+    "**/*.ts",
+    "**/*.tsx",
+    "../next.config.js",
+    "../types/Github.ts"
+  ],
+  "exclude": [
+    "node_modules"
+  ],
+  "compilerOptions": {
+    "target": "ES2017"
+  }
 }

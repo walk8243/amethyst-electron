@@ -76,6 +76,7 @@ const setupMainWindow = () => {
 const setupWebview = (mainWindow: BrowserWindow) => {
 	const webview = windowUtils.createWebview();
 	mainWindow.contentView.addChildView(webview);
+	webview.webContents.loadURL('https://github.com/');
 
 	ipcMain.handle('github:issue', async (_event, issue: Issue) => {
 		store.set(`issueSupplementMap.${issue.key}.isRead`, true);
@@ -89,15 +90,15 @@ const setupWebview = (mainWindow: BrowserWindow) => {
 	});
 	ipcMain.handle('browser:history', (_event, ope: 'back' | 'forward') => {
 		if (ope === 'back') {
-			webview.webContents.goBack();
+			webview.webContents.navigationHistory.goBack();
 		}
 		if (ope === 'forward') {
-			webview.webContents.goForward();
+			webview.webContents.navigationHistory.goForward();
 		}
 
 		return {
-			canGoBack: webview.webContents.canGoBack(),
-			canGoForward: webview.webContents.canGoForward(),
+			canGoBack: webview.webContents.navigationHistory.canGoBack(),
+			canGoForward: webview.webContents.navigationHistory.canGoForward(),
 		};
 	});
 	ipcMain.on('browser:copy', (_event, url: string) => {
@@ -117,8 +118,8 @@ const setupWebview = (mainWindow: BrowserWindow) => {
 	webview.webContents.on('did-finish-load', () => {
 		mainWindow.webContents.send('browser:load', {
 			url: webview.webContents.getURL(),
-			canGoBack: webview.webContents.canGoBack(),
-			canGoForward: webview.webContents.canGoForward(),
+			canGoBack: webview.webContents.navigationHistory.canGoBack(),
+			canGoForward: webview.webContents.navigationHistory.canGoForward(),
 		});
 	});
 	return webview;
