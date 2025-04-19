@@ -13,7 +13,10 @@
 			],
 			"program": "${workspaceFolder}\\node_modules\\electron\\cli.js",
 			"args": ["--trace-warnings", "."],
-			"preLaunchTask": "${defaultBuildTask}"
+			"preLaunchTask": "${defaultBuildTask}",
+			"runtimeExecutable": "fnm",
+			"runtimeArgs": ["exec", "--using-file", "--", "node"],
+			"restart": true
 		}
 	]
 }
