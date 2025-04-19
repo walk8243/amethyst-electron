@@ -6,6 +6,7 @@ const nextConfig = {
 	images: {
 		unoptimized: true,
 	},
+	devIndicators: false,
 };
 
 // eslint-disable-next-line no-undef

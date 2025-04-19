@@ -1,6 +1,5 @@
 import {
 	ReactNode,
-	Reducer,
 	useContext,
 	useEffect,
 	useReducer,
