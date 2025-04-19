@@ -1,4 +1,4 @@
-import { Reducer, useMemo, useReducer } from 'react';
+import { useMemo, useReducer } from 'react';
 import type { AppProps } from 'next/app';
 import Head from 'next/head';
 import type { PaletteMode } from '@mui/material';
@@ -18,8 +18,8 @@ import '@fontsource/roboto/700.css';
 import textColor from '../styles/colors/text';
 
 const MyApp = ({ Component, pageProps }: AppProps) => {
-	const [mode, dispatch] = useReducer<Reducer<PaletteMode, PaletteMode>>(
-		(_prevMode, currentMode) => currentMode,
+	const [mode, dispatch] = useReducer<PaletteMode, [PaletteMode]>(
+		(_prev, cur) => cur,
 		'light',
 	);
 	const theme = useMemo(
