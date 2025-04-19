@@ -63,7 +63,7 @@
     "@types/react": "^19.1.2",
     "@types/react-dom": "^19.1.2",
     "@types/semver": "^7.7.0",
-    "electron": "^35.1.5",
+    "electron": "^35.2.0",
     "electron-builder": "^26.0.12",
     "eslint": "^9.24.0",
     "eslint-config-prettier": "^10.1.2",
