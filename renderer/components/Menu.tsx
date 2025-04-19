@@ -56,7 +56,7 @@ const Menu = () => {
 				rowGap={6}
 				height="100%"
 			>
-				{userInfo ? <User user={userInfo} /> : <Grid item></Grid>}
+				{userInfo ? <User user={userInfo} /> : <Grid></Grid>}
 				<Filters user={userInfo} />
 				<UpdatedAt />
 			</Grid>
@@ -65,8 +65,8 @@ const Menu = () => {
 };
 
 const User = ({ user }: { user: UserInfo }) => (
-	<Grid container item columnGap={2}>
-		<Grid item xs="auto">
+	<Grid container columnGap={2}>
+		<Grid>
 			<Avatar
 				alt={user.login}
 				src={user.avatarUrl}
@@ -75,9 +75,7 @@ const User = ({ user }: { user: UserInfo }) => (
 		</Grid>
 		<Grid
 			container
-			item
-			xs
-			zeroMinWidth
+			size="grow"
 			direction="column"
 			justifyContent="center"
 		>
@@ -96,8 +94,8 @@ const Filters = ({ user }: { user: UserInfo | null }) => {
 	};
 
 	return (
-		<Grid container item width="100%">
-			<Grid item width="100%">
+		<Grid container size="grow">
+			<Grid size="grow">
 				<Typography variant="subtitle1" mb={1}>
 					Library
 				</Typography>
@@ -170,19 +168,18 @@ const UpdatedAt = () => {
 	return (
 		<Grid
 			container
-			item
 			justifyContent="space-between"
 			alignItems="center"
 			width="100%"
 		>
-			<Grid item>
+			<Grid>
 				<Typography
 					sx={{ height: '1lh', overflow: 'hidden', verticalAlign: 'bottom' }}
 				>
 					{updatedAt}
 				</Typography>
 			</Grid>
-			<Grid item>
+			<Grid>
 				<IconButton
 					aria-label="toggle color mode"
 					size="small"

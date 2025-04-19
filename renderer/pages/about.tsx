@@ -39,7 +39,7 @@ const AppInfo = () => {
 			</Heading>
 
 			<Grid container alignItems="center" gap={2} sx={{ px: 1 }}>
-				<Grid item xs="auto">
+				<Grid>
 					<Image
 						alt="app icon"
 						src={appIcon}
@@ -49,21 +49,21 @@ const AppInfo = () => {
 						placeholder="blur"
 					/>
 				</Grid>
-				<Grid container item direction="column" xs zeroMinWidth gap={2}>
-					<Grid container item alignItems="flex-end" gap={1}>
-						<Grid item>
+				<Grid container direction="column" size="grow" gap={2}>
+					<Grid container alignItems="flex-end" gap={1}>
+						<Grid>
 							<Typography variant="h3">Amethyst</Typography>
 						</Grid>
-						<Grid item>
+						<Grid>
 							<Typography variant="subtitle1">{version}</Typography>
 						</Grid>
 					</Grid>
-					<Grid item>
+					<Grid>
 						<Typography>
 							関係しているGitHubのIssuesを表示・管理するデスクトップアプリ
 						</Typography>
 					</Grid>
-					<Grid item>
+					<Grid>
 						<Link
 							component="button"
 							onClick={() =>
@@ -94,7 +94,7 @@ const ButtonArea = () => {
 			</Heading>
 
 			<Grid container justifyContent="center">
-				<Grid item>
+				<Grid>
 					<Button variant="outlined" onClick={handleClose}>
 						閉じる
 					</Button>
@@ -111,7 +111,7 @@ const CopyRight = () => (
 		</Heading>
 
 		<Grid container justifyContent="center">
-			<Grid item>
+			<Grid>
 				<Typography
 					variant="caption"
 					sx={{ '::before': { content: '"©"', mr: 0.5 } }}

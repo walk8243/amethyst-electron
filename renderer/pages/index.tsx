@@ -85,13 +85,13 @@ const MainComponent = () => {
 					height="100%"
 					overflow="hidden"
 				>
-					<Grid item sx={{ width: 250 }}>
+					<Grid sx={{ width: 250 }}>
 						<Menu />
 					</Grid>
-					<Grid item sx={{ width: 350, height: '100%', overflowY: 'hidden' }}>
+					<Grid sx={{ width: 350, height: '100%', overflowY: 'hidden' }}>
 						<IssueList />
 					</Grid>
-					<Grid item>
+					<Grid>
 						<Viewer />
 					</Grid>
 				</Grid>
