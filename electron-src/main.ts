@@ -77,6 +77,7 @@ const setupWebview = (mainWindow: BrowserWindow) => {
 	const webview = windowUtils.createWebview();
 	mainWindow.contentView.addChildView(webview);
 	webview.webContents.loadURL('https://github.com/');
+	windowUtils.putWebview(mainWindow, webview);
 
 	ipcMain.handle('github:issue', async (_event, issue: Issue) => {
 		store.set(`issueSupplementMap.${issue.key}.isRead`, true);
