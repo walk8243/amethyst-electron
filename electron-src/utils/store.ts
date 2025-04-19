@@ -4,7 +4,7 @@ import semver from 'semver';
 import type { UserInfo } from '../../types/User';
 import type { Issue, IssueSupplementMap } from '../../types/Issue';
 
-export const store = new Store<{
+interface StoreSchema {
 	appVersion: string;
 	githubSetting: { baseUrl: string; token: string };
 	userInfo: UserInfo;
@@ -14,7 +14,9 @@ export const store = new Store<{
 	};
 	issueSupplementMap: IssueSupplementMap;
 	colorMode: 'light' | 'dark';
-}>({
+}
+
+export const store = new Store<StoreSchema>({
 	schema: {
 		appVersion: {
 			type: 'string',

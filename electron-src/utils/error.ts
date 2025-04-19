@@ -1,4 +1,4 @@
-import { BrowserView, BrowserWindow, dialog } from 'electron';
+import { BrowserWindow, dialog, WebContentsView } from 'electron';
 import log from 'electron-log/main';
 import { ErrorData } from '../../types/Error';
 
@@ -13,7 +13,7 @@ export const handleErrorDisplay = ({
 }: {
 	error: ErrorData;
 	mainWindow: BrowserWindow;
-	webview: BrowserView;
+	webview: WebContentsView;
 }) => {
 	log.error(`${error.name}: ${error.message}`);
 	sendError(error, mainWindow);
@@ -28,7 +28,7 @@ export const handleErrorDisplay = ({
 const sendError = (error: ErrorData, mainWindow: BrowserWindow) => {
 	mainWindow.webContents.send('error:show', error);
 };
-const viewReportIssue = (webview: BrowserView) => {
+const viewReportIssue = (webview: WebContentsView) => {
 	webview.webContents.loadURL(CREATE_ISSUE_URL).catch((error) => {
 		log.error('エラー報告用のIssueを表示できませんでした', error);
 	});

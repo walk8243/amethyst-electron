@@ -53,8 +53,8 @@ const UpdateInfo = () => {
 				更新情報
 			</Heading>
 
-			<Grid container m={2} mt={0} width="auto" rowGap={1}>
-				<Grid item width="100%">
+			<Grid container m={2} mt={0} rowGap={1}>
+				<Grid width="100%">
 					{status === null || status.canUpdate ? (
 						<Alert severity="warning">
 							<Typography>最新バージョンに更新してください</Typography>
@@ -65,7 +65,7 @@ const UpdateInfo = () => {
 						</Alert>
 					)}
 				</Grid>
-				<Grid item width="100%">
+				<Grid width="100%">
 					{status === null ? (
 						<></>
 					) : (
@@ -132,17 +132,17 @@ const HowToUpdateForWindows = () => {
 				mb={2}
 				width="auto"
 			>
-				<Grid item width="100%">
+				<Grid width="100%">
 					<Typography>
 						以下のボタンから最新のMSIファイルをダウンロードしてください。
 					</Typography>
 				</Grid>
-				<Grid item mb={1}>
+				<Grid mb={1}>
 					<Button onClick={handleClick} variant="contained" color="primary">
 						最新のMSIファイルをダウンロード
 					</Button>
 				</Grid>
-				<Grid item width="100%">
+				<Grid width="100%">
 					<Typography>
 						ダウンロードが完了したら、エクスプローラーからMSIファイルを実行してください。
 					</Typography>
@@ -178,12 +178,12 @@ const HowToUpdateForMac = () => {
 				mb={2}
 				width="auto"
 			>
-				<Grid item width="100%">
+				<Grid width="100%">
 					<Typography>
 						HomebrewのCaskファイルを読み込みなおして、Amethystをアップデートしてください。
 					</Typography>
 				</Grid>
-				<Grid item width="100%">
+				<Grid width="100%">
 					<Paper
 						elevation={0}
 						sx={{
@@ -239,12 +239,12 @@ const HowToUpdateForOther = () => {
 				mb={2}
 				width="auto"
 			>
-				<Grid item width="100%">
+				<Grid width="100%">
 					<Typography>
 						以下ドキュメントを参考に、ご自身でビルドしなおしてください。
 					</Typography>
 				</Grid>
-				<Grid item>
+				<Grid>
 					<Button
 						variant="contained"
 						color="primary"
@@ -271,7 +271,7 @@ const ButtonArea = () => {
 			</Heading>
 
 			<Grid container justifyContent="center">
-				<Grid item>
+				<Grid>
 					<Button variant="outlined" onClick={handleClose}>
 						閉じる
 					</Button>

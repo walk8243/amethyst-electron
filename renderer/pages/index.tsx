@@ -1,6 +1,5 @@
 import {
 	ReactNode,
-	Reducer,
 	useContext,
 	useEffect,
 	useReducer,
@@ -85,13 +84,13 @@ const MainComponent = () => {
 					height="100%"
 					overflow="hidden"
 				>
-					<Grid item sx={{ width: 250 }}>
+					<Grid sx={{ width: 250 }}>
 						<Menu />
 					</Grid>
-					<Grid item sx={{ width: 350, height: '100%', overflowY: 'hidden' }}>
+					<Grid sx={{ width: 350, height: '100%', overflowY: 'hidden' }}>
 						<IssueList />
 					</Grid>
-					<Grid item>
+					<Grid>
 						<Viewer />
 					</Grid>
 				</Grid>
@@ -115,8 +114,8 @@ const UserInfoContextProvider = ({ children }: { children: ReactNode }) => {
 };
 
 const IssueFilterContextProvider = ({ children }: { children: ReactNode }) => {
-	const [issueFilter, dispatch] = useReducer<Reducer<IssueFilter, IssueFilter>>(
-		(_prevFilter, currentfilter) => currentfilter,
+	const [issueFilter, dispatch] = useReducer<IssueFilter, [IssueFilter]>(
+		(_prev, cur) => cur,
 		issueFilterAll,
 	);
 
@@ -131,8 +130,8 @@ const IssueFilterContextProvider = ({ children }: { children: ReactNode }) => {
 
 const IssueContextProvider = ({ children }: { children: ReactNode }) => {
 	const [issues, setIssues] = useState<Issue[] | null>(null);
-	const [issue, dispatch] = useReducer<Reducer<Issue | null, Issue>>(
-		(_prevIssue, currentIssue) => currentIssue,
+	const [issue, dispatch] = useReducer<Issue | null, [Issue]>(
+		(_prev, cur) => cur,
 		null,
 	);
 

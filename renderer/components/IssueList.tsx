@@ -44,7 +44,7 @@ const Header = ({ issues }: { issues: Issue[] | null }) => {
 	const colorMode = useContext(ColorModeContext);
 
 	return (
-		<Grid item p={3} bgcolor={surface.container[colorMode].high} boxShadow={4}>
+		<Grid p={3} bgcolor={surface.container[colorMode].high} boxShadow={4}>
 			<Heading level={4}>Issue</Heading>
 			<Typography variant="subtitle2">{subtitle}</Typography>
 		</Grid>
@@ -61,12 +61,11 @@ const IssueCards = ({ issues }: { issues: Issue[] | null }) => {
 		return (
 			<Grid
 				container
-				item
 				alignItems="center"
 				justifyContent="center"
 				bgcolor={surface.container[colorMode].main}
 			>
-				<Grid item>
+				<Grid>
 					<FontAwesomeIcon icon={faSpinner} size="xl" spin={true} />
 				</Grid>
 			</Grid>
@@ -86,7 +85,7 @@ const IssueCards = ({ issues }: { issues: Issue[] | null }) => {
 			{issues
 				.filter((issue) => issueFilter.filter(issue, { user: userInfo }))
 				.map((issue) => (
-					<Grid item key={issue.key} xs={12}>
+					<Grid key={issue.key} size={12}>
 						<IssueCard
 							issue={issue}
 							supplement={issueSupplementMap[issue.key]}

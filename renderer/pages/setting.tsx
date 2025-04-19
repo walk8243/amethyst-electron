@@ -88,12 +88,12 @@ const SettingPage = () => {
 					操作ボタン
 				</Heading>
 				<Grid container justifyContent="center" gap={2}>
-					<Grid item>
+					<Grid>
 						<Button variant="contained" onClick={handleSubmit}>
 							保存
 						</Button>
 					</Grid>
-					<Grid item>
+					<Grid>
 						<Button variant="outlined" onClick={handleCancel}>
 							キャンセル
 						</Button>

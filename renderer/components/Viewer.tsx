@@ -89,7 +89,7 @@ const IssueUrlBar = () => {
 				columnGap={2}
 				p={2}
 			>
-				<Grid item>
+				<Grid>
 					<IconButton
 						onClick={() => handleHistory('back')}
 						size="small"
@@ -98,7 +98,7 @@ const IssueUrlBar = () => {
 						<FontAwesomeIcon icon={faArrowLeft} />
 					</IconButton>
 				</Grid>
-				<Grid item>
+				<Grid>
 					<IconButton
 						onClick={() => handleHistory('forward')}
 						size="small"
@@ -107,15 +107,15 @@ const IssueUrlBar = () => {
 						<FontAwesomeIcon icon={faArrowRight} />
 					</IconButton>
 				</Grid>
-				<Grid item>
+				<Grid>
 					<IconButton onClick={handleReload} size="small">
 						<FontAwesomeIcon icon={faArrowRotateRight} />
 					</IconButton>
 				</Grid>
-				<Grid item>
+				<Grid>
 					<UrlBar url={url} />
 				</Grid>
-				<Grid container item>
+				<Grid>
 					<TextField
 						hiddenLabel
 						variant="outlined"
@@ -152,7 +152,7 @@ const IssueUrlBar = () => {
 						value={search}
 					/>
 				</Grid>
-				<Grid item>
+				<Grid>
 					<IconButton onClick={handleOpen} size="small">
 						<FontAwesomeIcon icon={faArrowUpRightFromSquare} />
 					</IconButton>

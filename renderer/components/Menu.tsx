@@ -56,7 +56,7 @@ const Menu = () => {
 				rowGap={6}
 				height="100%"
 			>
-				{userInfo ? <User user={userInfo} /> : <Grid item></Grid>}
+				{userInfo ? <User user={userInfo} /> : <Grid></Grid>}
 				<Filters user={userInfo} />
 				<UpdatedAt />
 			</Grid>
@@ -65,8 +65,8 @@ const Menu = () => {
 };
 
 const User = ({ user }: { user: UserInfo }) => (
-	<Grid container item columnGap={2}>
-		<Grid item xs="auto">
+	<Grid container columnGap={2}>
+		<Grid>
 			<Avatar
 				alt={user.login}
 				src={user.avatarUrl}
@@ -75,9 +75,7 @@ const User = ({ user }: { user: UserInfo }) => (
 		</Grid>
 		<Grid
 			container
-			item
-			xs
-			zeroMinWidth
+			size="grow"
 			direction="column"
 			justifyContent="center"
 		>
@@ -96,30 +94,28 @@ const Filters = ({ user }: { user: UserInfo | null }) => {
 	};
 
 	return (
-		<Grid container item width="100%">
-			<Grid item width="100%">
-				<Typography variant="subtitle1" mb={1}>
-					Library
-				</Typography>
-				<List sx={{ px: 2, py: 0 }}>
-					{issueFilters.map((filter) => (
-						<ListItem key={filter.type} sx={{ my: 1, p: 0 }}>
-							<ListItemButton
-								onClick={(_e) => issueFilterDispatch(filter)}
-								onContextMenu={(e) => showContextMenu(e, filter.type)}
-								selected={filter.type === issueFilter.type}
-								sx={{ p: '3px', borderRadius: 1 }}
-							>
-								<ListItemIcon sx={{ minWidth: 'initial', mr: 2 }}>
-									<FontAwesomeIcon icon={filter.icon} />
-								</ListItemIcon>
-								<ListItemText primary={filter.title} />
-								<UnreadMarker user={user} filter={filter} />
-							</ListItemButton>
-						</ListItem>
-					))}
-				</List>
-			</Grid>
+		<Grid>
+			<Typography variant="subtitle1" mb={1}>
+				Library
+			</Typography>
+			<List sx={{ px: 2, py: 0 }}>
+				{issueFilters.map((filter) => (
+					<ListItem key={filter.type} sx={{ my: 1, p: 0 }}>
+						<ListItemButton
+							onClick={(_e) => issueFilterDispatch(filter)}
+							onContextMenu={(e) => showContextMenu(e, filter.type)}
+							selected={filter.type === issueFilter.type}
+							sx={{ p: '3px', borderRadius: 1 }}
+						>
+							<ListItemIcon sx={{ minWidth: 'initial', mr: 2 }}>
+								<FontAwesomeIcon icon={filter.icon} />
+							</ListItemIcon>
+							<ListItemText primary={filter.title} />
+							<UnreadMarker user={user} filter={filter} />
+						</ListItemButton>
+					</ListItem>
+				))}
+			</List>
 		</Grid>
 	);
 };
@@ -170,19 +166,18 @@ const UpdatedAt = () => {
 	return (
 		<Grid
 			container
-			item
 			justifyContent="space-between"
 			alignItems="center"
 			width="100%"
 		>
-			<Grid item>
+			<Grid>
 				<Typography
 					sx={{ height: '1lh', overflow: 'hidden', verticalAlign: 'bottom' }}
 				>
 					{updatedAt}
 				</Typography>
 			</Grid>
-			<Grid item>
+			<Grid>
 				<IconButton
 					aria-label="toggle color mode"
 					size="small"

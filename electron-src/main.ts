@@ -1,13 +1,13 @@
 import { join } from 'node:path';
 import {
 	app,
-	BrowserView,
 	BrowserWindow,
 	clipboard,
 	ipcMain,
 	Menu,
 	session,
 	shell,
+	WebContentsView,
 } from 'electron';
 import prepareNext from 'electron-next';
 import isDev from 'electron-is-dev';
@@ -40,11 +40,11 @@ export const main = async () => {
 		: gainGithubAllData(true);
 
 	const webview = setupWebview(mainWindow);
-	const { updateWindow } = setupModalWindow(
+	const { updateWindow } = setupModalWindow({
 		mainWindow,
 		webview,
-		storeDataFlag.isInvalid(),
-	);
+		settingShowFlag: storeDataFlag.isInvalid(),
+	});
 	setupErrorHandling(mainWindow, webview);
 	setupResizedSetting(mainWindow, webview);
 	setupContextMenu();
@@ -75,8 +75,10 @@ const setupMainWindow = () => {
 };
 const setupWebview = (mainWindow: BrowserWindow) => {
 	const webview = windowUtils.createWebview();
-	mainWindow.setBrowserView(webview);
+	mainWindow.contentView.addChildView(webview);
+	webview.webContents.loadURL('https://github.com/');
 	windowUtils.putWebview(mainWindow, webview);
+
 	ipcMain.handle('github:issue', async (_event, issue: Issue) => {
 		store.set(`issueSupplementMap.${issue.key}.isRead`, true);
 		webview.webContents.loadURL(issue.url);
@@ -89,15 +91,15 @@ const setupWebview = (mainWindow: BrowserWindow) => {
 	});
 	ipcMain.handle('browser:history', (_event, ope: 'back' | 'forward') => {
 		if (ope === 'back') {
-			webview.webContents.goBack();
+			webview.webContents.navigationHistory.goBack();
 		}
 		if (ope === 'forward') {
-			webview.webContents.goForward();
+			webview.webContents.navigationHistory.goForward();
 		}
 
 		return {
-			canGoBack: webview.webContents.canGoBack(),
-			canGoForward: webview.webContents.canGoForward(),
+			canGoBack: webview.webContents.navigationHistory.canGoBack(),
+			canGoForward: webview.webContents.navigationHistory.canGoForward(),
 		};
 	});
 	ipcMain.on('browser:copy', (_event, url: string) => {
@@ -117,17 +119,21 @@ const setupWebview = (mainWindow: BrowserWindow) => {
 	webview.webContents.on('did-finish-load', () => {
 		mainWindow.webContents.send('browser:load', {
 			url: webview.webContents.getURL(),
-			canGoBack: webview.webContents.canGoBack(),
-			canGoForward: webview.webContents.canGoForward(),
+			canGoBack: webview.webContents.navigationHistory.canGoBack(),
+			canGoForward: webview.webContents.navigationHistory.canGoForward(),
 		});
 	});
 	return webview;
 };
-const setupModalWindow = (
-	mainWindow: BrowserWindow,
-	webview: BrowserView,
-	settingShowFlag: boolean,
-) => {
+const setupModalWindow = ({
+	mainWindow,
+	webview,
+	settingShowFlag,
+}: {
+	mainWindow: BrowserWindow;
+	webview: WebContentsView;
+	settingShowFlag: boolean;
+}) => {
 	const settingWindow = windowUtils.createSetting(mainWindow);
 	const aboutWindow = windowUtils.createAbout(mainWindow);
 	const updateWindow = windowUtils.createUpdate(mainWindow);
@@ -153,7 +159,7 @@ const setupModalWindow = (
 };
 const setupErrorHandling = (
 	mainWindow: BrowserWindow,
-	webview: BrowserView,
+	webview: WebContentsView,
 ) => {
 	const logPath = join(
 		app.getPath('userData'),
@@ -185,7 +191,7 @@ const setupErrorHandling = (
 };
 const setupResizedSetting = (
 	mainWindow: BrowserWindow,
-	webview: BrowserView,
+	webview: WebContentsView,
 ) => {
 	mainWindow
 		.on('maximize', () => {

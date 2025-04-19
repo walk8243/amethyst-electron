@@ -77,13 +77,13 @@ export const IssueCard = ({
 				<CardContent>
 					<Grid container direction="column" rowGap={1}>
 						<Grid container columnGap={1}>
-							<Grid item pt="2px">
+							<Grid pt="2px">
 								<FontAwesomeIcon
 									icon={findIssueIcon(issue.state)}
 									color={findIssueStateColor(issue.state)}
 								/>
 							</Grid>
-							<Grid item xs zeroMinWidth>
+							<Grid size="grow">
 								<Typography
 									variant="subtitle1"
 									color="inherit"
@@ -94,7 +94,7 @@ export const IssueCard = ({
 							</Grid>
 						</Grid>
 						<Grid container columnGap={2}>
-							<Grid item>
+							<Grid>
 								<Avatar
 									alt={issue.creator?.login}
 									src={issue.creator?.avatarUrl}
@@ -103,14 +103,12 @@ export const IssueCard = ({
 							</Grid>
 							<Grid
 								container
-								item
-								xs
-								zeroMinWidth
+								size="grow"
 								direction="row-reverse"
 								columnGap={1}
 							>
 								{issue.reviews.map((review) => (
-									<Grid item key={review.login}>
+									<Grid key={review.login}>
 										<ReviewerAvatar review={review} />
 									</Grid>
 								))}
@@ -118,13 +116,13 @@ export const IssueCard = ({
 						</Grid>
 						<Grid container columnGap={1}>
 							{issue.labels.map((label) => (
-								<Grid item key={label.key}>
+								<Grid key={label.key}>
 									<IssueLabel label={label} mode={colorMode} />
 								</Grid>
 							))}
 						</Grid>
 						<Grid container columnGap={1}>
-							<Grid container item xs zeroMinWidth>
+							<Grid container size="grow">
 								<Typography variant="body2">{issue.repositoryName}</Typography>
 								<Typography
 									variant="body2"
@@ -133,7 +131,7 @@ export const IssueCard = ({
 									{issue.number}
 								</Typography>
 							</Grid>
-							<Grid item>
+							<Grid>
 								<Typography variant="body2">
 									{dayjs(issue.updatedAt).fromNow()}
 								</Typography>
