@@ -94,30 +94,28 @@ const Filters = ({ user }: { user: UserInfo | null }) => {
 	};
 
 	return (
-		<Grid container size="grow">
-			<Grid size="grow">
-				<Typography variant="subtitle1" mb={1}>
-					Library
-				</Typography>
-				<List sx={{ px: 2, py: 0 }}>
-					{issueFilters.map((filter) => (
-						<ListItem key={filter.type} sx={{ my: 1, p: 0 }}>
-							<ListItemButton
-								onClick={(_e) => issueFilterDispatch(filter)}
-								onContextMenu={(e) => showContextMenu(e, filter.type)}
-								selected={filter.type === issueFilter.type}
-								sx={{ p: '3px', borderRadius: 1 }}
-							>
-								<ListItemIcon sx={{ minWidth: 'initial', mr: 2 }}>
-									<FontAwesomeIcon icon={filter.icon} />
-								</ListItemIcon>
-								<ListItemText primary={filter.title} />
-								<UnreadMarker user={user} filter={filter} />
-							</ListItemButton>
-						</ListItem>
-					))}
-				</List>
-			</Grid>
+		<Grid>
+			<Typography variant="subtitle1" mb={1}>
+				Library
+			</Typography>
+			<List sx={{ px: 2, py: 0 }}>
+				{issueFilters.map((filter) => (
+					<ListItem key={filter.type} sx={{ my: 1, p: 0 }}>
+						<ListItemButton
+							onClick={(_e) => issueFilterDispatch(filter)}
+							onContextMenu={(e) => showContextMenu(e, filter.type)}
+							selected={filter.type === issueFilter.type}
+							sx={{ p: '3px', borderRadius: 1 }}
+						>
+							<ListItemIcon sx={{ minWidth: 'initial', mr: 2 }}>
+								<FontAwesomeIcon icon={filter.icon} />
+							</ListItemIcon>
+							<ListItemText primary={filter.title} />
+							<UnreadMarker user={user} filter={filter} />
+						</ListItemButton>
+					</ListItem>
+				))}
+			</List>
 		</Grid>
 	);
 };

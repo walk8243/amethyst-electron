@@ -53,7 +53,7 @@ const UpdateInfo = () => {
 				更新情報
 			</Heading>
 
-			<Grid container m={2} mt={0} width="auto" rowGap={1}>
+			<Grid container m={2} mt={0} rowGap={1}>
 				<Grid width="100%">
 					{status === null || status.canUpdate ? (
 						<Alert severity="warning">
