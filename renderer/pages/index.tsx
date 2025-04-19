@@ -115,8 +115,8 @@ const UserInfoContextProvider = ({ children }: { children: ReactNode }) => {
 };
 
 const IssueFilterContextProvider = ({ children }: { children: ReactNode }) => {
-	const [issueFilter, dispatch] = useReducer<Reducer<IssueFilter, IssueFilter>>(
-		(_prevFilter, currentfilter) => currentfilter,
+	const [issueFilter, dispatch] = useReducer<IssueFilter, [IssueFilter]>(
+		(_prev, current) => current,
 		issueFilterAll,
 	);
 
@@ -131,8 +131,8 @@ const IssueFilterContextProvider = ({ children }: { children: ReactNode }) => {
 
 const IssueContextProvider = ({ children }: { children: ReactNode }) => {
 	const [issues, setIssues] = useState<Issue[] | null>(null);
-	const [issue, dispatch] = useReducer<Reducer<Issue | null, Issue>>(
-		(_prevIssue, currentIssue) => currentIssue,
+	const [issue, dispatch] = useReducer<Issue | null, [Issue]>(
+		(_prev, current) => current,
 		null,
 	);
 
