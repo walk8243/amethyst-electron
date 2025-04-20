@@ -116,6 +116,36 @@ const setupWebview = (mainWindow: BrowserWindow) => {
 		},
 	);
 
+	webview.webContents.session.cookies.on('changed', async (_event, cookie, cause) => {
+		if (cause !== 'overwrite') return;
+		log.debug('Webviewのcookieが更新されました', {
+			domain: cookie.domain,
+			name: cookie.name,
+			sameSite: cookie.sameSite,
+		});
+
+		try {
+			const cookies = await mainWindow.webContents.session.cookies.get({ domain: cookie.domain, name: cookie.name });
+			if (cookies.length > 0) return;
+			await mainWindow.webContents.session.cookies.set({
+				url: `${cookie.secure ? 'https' : 'http'}://${cookie.domain}${cookie.path ?? '/'}`,
+				name: cookie.name,
+				value: cookie.value,
+				expirationDate: cookie.expirationDate,
+				secure: cookie.secure,
+				httpOnly: cookie.httpOnly,
+				sameSite: 'lax',
+			});
+			log.debug('main-windowのcookieを設定しました', {
+				domain: cookie.domain,
+				name: cookie.name,
+				expirationDate: cookie.expirationDate,
+			});
+		} catch (error) {
+			log.warn('main-windowのcookieを設定できませんでした', error);
+		}
+	});
+
 	webview.webContents.on('did-finish-load', () => {
 		mainWindow.webContents.send('browser:load', {
 			url: webview.webContents.getURL(),
